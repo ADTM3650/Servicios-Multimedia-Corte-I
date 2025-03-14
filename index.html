@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Adivinar el Número</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #result {
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>¡Adivina el Número!</h1>
+    <p>El número está entre 1 y 100. Tienes 10 intentos para adivinarlo.</p>
+    <input type="number" id="guess" placeholder="Ingresa tu número" />
+    <button onclick="checkGuess()">Adivinar</button>
+    
+    <div id="result"></div>
+    <div id="attempts"></div>
+
+    <script>
+        let randomNumber = Math.floor(Math.random() * 100) + 1; // Número aleatorio entre 1 y 100
+        let attemptsLeft = 10;
+
+        function checkGuess() {
+            const userGuess = parseInt(document.getElementById('guess').value);
+            const resultDiv = document.getElementById('result');
+            const attemptsDiv = document.getElementById('attempts');
+
+            if (isNaN(userGuess)) {
+                resultDiv.textContent = "Por favor, ingresa un número válido.";
+                return;
+            }
+
+            if (userGuess < 1 || userGuess > 100) {
+                resultDiv.textContent = "El número debe estar entre 1 y 100.";
+                return;
+            }
+
+            attemptsLeft--;
+
+            if (userGuess === randomNumber) {
+                resultDiv.textContent = "¡Felicidades, has adivinado el número!";
+                attemptsDiv.textContent = "";
+                document.querySelector('button').disabled = true;
+            } else if (userGuess < randomNumber) {
+                resultDiv.textContent = "El número es mayor. Intenta de nuevo.";
+            } else {
+                resultDiv.textContent = "El número es menor. Intenta de nuevo.";
+            }
+
+            attemptsDiv.textContent = `Te quedan ${attemptsLeft} intentos.`;
+
+            if (attemptsLeft === 0) {
+                resultDiv.textContent = `¡Se acabaron los intentos! El número era: ${randomNumber}`;
+                document.querySelector('button').disabled = true;
+            }
+        }
+    </script>
+</body>
+</html>
